@@ -102,32 +102,34 @@ const numero = function(event) {
 }
 
 // letras
-const letras = function(event) {
+const letras = function(event, elemento) {
     // if (event.keyCode >= 97  || event.keyCode <= 122) event.preventDefault(); //no deja que se ejecute el evento. 
-    console.log();
-    let letras = /a-zA-z/
-    if (letras.test(event.value)) {
+    console.log(elemento.value);
+    let letras = /^[a-zA-Z\s]*$/
+    if (letras.test(event.key)) {
         console.log("Claro que yes");
     }else{
-        console.log("No");
+        event.preventDefault()
     }
 }
 
-$nombre.addEventListener("keypress", function(){
-    letras($nombre)
-});
-$apellido.addEventListener("keypress", function(){
-    letras($apellido);
-});
 
 // correo
 const correo = function (event) {
     if(event.keyCode = 64) event.preventDefault();
 }
 
+$nombre.addEventListener("keypress", function (event) {
+    letras(event, $nombre)
+});
+
+$apellido.addEventListener("keypress", function (event) {
+    letras(event, $apellido)
+});
+
+
 $documento.addEventListener("keypress", numero);
 $telefono.addEventListener("keypress", numero);
-
 $email.addEventListener("keypress", correo);
 
 
@@ -137,3 +139,5 @@ $documento.addEventListener("keypress", function(event) {
     console.log(this.value);
     console.log(event.keyCode);
 })
+
+
