@@ -1,4 +1,12 @@
-import { validarCorreo, validarTipDoc, validarPoliticas } from "./module.js";
+import {validarRemover } from "./modules/validarRemover.js";
+import {validarCorreo } from "./modules/validarCorreo.js";
+import {validarPoliticas } from "./modules/validarPoliticas.js";
+import {validarTipDoc } from "./modules/validarTipDoc.js";
+import {validarValidar } from "./modules/validarValidar.js";
+import {validarNumero  } from "./modules/validarNumero.js";
+import {validarLetras } from "./modules/validarLetras.js"
+import {validarDoc  } from "./modules/validarDocumento.js";
+
 const $formulario = document.querySelector("form");
 const nombre = document.querySelector("#nombre");
 const apellido = document.querySelector("#apellido");
@@ -10,112 +18,39 @@ const politicas = document.querySelector("#politicas");
 const enviar = document.querySelector("#enviar");
 const email = document.querySelector("#email");
 
-function quitarCalse (valor) {
-    valor.classList.remove("error");
-}
+function quitarCalse (valor) {valor.classList.remove("error");}
 
-
-const validar = (event) => {
-    event.preventDefault()
-    console.log(nombre.value);
-    if (nombre.value === "") {
-        nombre.focus()
-        nombre.classList.add("error")
-    
-    }if( apellido.value === ""){
-        apellido.focus()
-        apellido.classList.add("error")
-
-    }if(tipo_doc.value === "0"){
-        tipo_doc.focus()
-        tipo_doc.classList.add("error")
-    }
-    if(direccion.value === ""){
-        direccion.focus()
-        direccion.classList.add("error")
-    }if(telefono.value === ""){
-        telefono.focus()
-        telefono.classList.add("error")
-    }if(documento.value === ""){
-        documento.focus()
-        documento.classList.add("error")
-    }
-
-    if (email.value === "") {
-        email.focus();
-        email.classList.add("error");
-    }
-}
-
+const validar = (e) => validarValidar(e)
+   
 $formulario.addEventListener("submit", validar)  //boton, al dar click haga la funcion
-const remover = (input, validacion) => {
-    if (!input.value == "") {
-        input.classList.add("correcto");
-        input.classList.remove("error");
-    } else {
-        input.classList.remove("correcto");
-        input.classList.add("error");
-    }
-};
 
-nombre.addEventListener("keyup", () => {
-    remover(nombre);
-});
+const remover = (e) => validarRemover(e)
 
-apellido.addEventListener("keyup", () => {
-    remover(apellido);
-});
+nombre.addEventListener("keyup", (e) => {remover(e);});
 
-direccion.addEventListener("keyup", () => {
-    remover(direccion);
-});
+apellido.addEventListener("keyup", (e) => {remover(e);});
 
-telefono.addEventListener("keyup", () => {
-    remover(telefono);
-});
+direccion.addEventListener("keyup", (e) => {remover(e);});
+
+telefono.addEventListener("keyup", (e) => {remover(e);});
 
 tipo_doc.addEventListener("change", (e) => validarTipDoc(e));
 
-
-documento.addEventListener("keyup", () => {
-    remover(documento);
-});
+documento.addEventListener("keyup", (e) => {remover(e);});
 
 enviar.setAttribute('disabled', '');
 
-politicas.addEventListener("change", () => validarPoliticas(e));    
+politicas.addEventListener("change", (e) => validarPoliticas(e, enviar));    
 console.log($formulario)
 
+documento.addEventListener("keypress", (e) => validarNumero(e));
 
-const numero = function(event) {
-    if (event.keyCode < 48 || event.keyCode > 57) {
-        event.preventDefault(); // Esto evitará que se ingrese el valor
-    }
-}
+telefono.addEventListener("keypress", (e) => validarNumero(e));
 
-documento.addEventListener("keypress", numero);
-telefono.addEventListener("keypress", numero)
+nombre.addEventListener("keypress", (e)=>{ validarLetras(e)});
 
-const letras = function(event, elemento){
-    let letras = /^[A-Za-zÀ-ÿ\s]*$/
-    if (!letras.test(event.key)) {
-        event.preventDefault();
-    }
-}
+apellido.addEventListener("keypress", (e)=>{validarLetras(e)});
 
-nombre.addEventListener("keypress", (event)=>{
-    letras(event, nombre)
-});
-apellido.addEventListener("keypress", (event)=>{
-    letras(event, apellido)
-})
-
-
-documento.addEventListener("keypress", function(event){
-    console.log("keypress", event)
-    console.log(this.value)
-    console.log(event.keyCode)
-    
-})
+documento.addEventListener("keypress", (e) => validarDoc(e));
 
 email.addEventListener('input', (e) => validarCorreo(e));
