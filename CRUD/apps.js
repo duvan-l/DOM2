@@ -6,7 +6,7 @@ import {validarValidar } from "./modules/validarValidar.js";
 import {validarNumero  } from "./modules/validarNumero.js";
 import {validarLetras } from "./modules/validarLetras.js"
 import {validarDoc  } from "./modules/validarDocumento.js";
-
+import {is_valid } from "./modules/is_valid.js";
 const $formulario = document.querySelector("form");
 const nombre = document.querySelector("#nombre");
 const apellido = document.querySelector("#apellido");
@@ -22,7 +22,9 @@ function quitarCalse (valor) {valor.classList.remove("error");}
 
 const validar = (e) => validarValidar(e)
    
-$formulario.addEventListener("submit", validar)  //boton, al dar click haga la funcion
+$formulario.addEventListener("submit", (event)=>{
+    is_valid(event, "form > [required]")
+})  //boton, al dar click haga la funcion
 
 const remover = (e) => validarRemover(e)
 
