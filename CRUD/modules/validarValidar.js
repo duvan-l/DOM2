@@ -1,5 +1,5 @@
 export function validarValidar(e) {
-    event.preventDefault()
+    e.preventDefault()
     console.log(nombre.value);
     if (nombre.value === "") {
         e.target.focus()
