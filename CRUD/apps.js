@@ -25,7 +25,7 @@ const validar = (e) => validarValidar(e)
    
 $formulario.addEventListener("submit", (e)=>{
     let response = is_valid(e, "form [required]");
-    alert(response) 
+    // alert(response) 
 
     const data = {
         nombre: nombre.value,
@@ -35,7 +35,28 @@ $formulario.addEventListener("submit", (e)=>{
         tipo_doc: tipo_doc.value,
         documento: documento.value
     }
-    console.log(data)
+    
+    if(response){
+        fetch("http://localhost:3000/user", {
+            method: 'POST', //metodo
+            body: JSON.stringify(data),  //cuerpo
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        .then((response => {
+            if(response.ok){
+                alert(`Datos guardados:
+                    Nombre: ${data.nombre} 
+                    Apellido: ${data.apellido} 
+                    Direccion: ${data.direccion}
+                    Telefono: ${data.telefono}
+                    Documento:${data.documento}` )
+            }else{
+                alert("Error al agregar los datos")
+            }
+        }))
+    }
 });
  //boton, al dar click haga la funcion
 
