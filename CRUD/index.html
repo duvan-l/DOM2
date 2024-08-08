@@ -7,32 +7,28 @@
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-    <section class="contenedor">
-        <div >  
+    <section >
+        <div class="contenedor layout mt-40 mb-40">
             <form class="formulario" action="" novalidate>
-                <label for="nombre">Ingresa tu nombre: </label>
+                <label for="nombre">ingresa tu nombre: </label>
                 <input type="text" name="nombre" id="nombre" placeholder="nombre" autocomplete="off" required>
 
-                <label for="apellido">Ingresa tu apellido: </label>
+                <label for="apellido">ingresa tu apellido: </label>
                 <input type="text" id="apellido" placeholder="apellido" autocomplete="off" required>
 
-                <label for="direc">Direccion: </label>
+                <label for="direc">direccion: </label>
                 <input type="text" id="direc" placeholder="direccion" autocomplete="off" required>
 
-                <label for="tel">Telefono: </label>
+                <label for="tel">telefono: </label>
                 <input type="" id="tel" placeholder="telefono" autocomplete="off" required>
 
                 <label for="tel">Email: </label>
                 <input type="email" id="email" placeholder="email" autocomplete="off" required>
                 
                 <label for="tipo_doc">Tipo de documento: </label>
-                <select class=" input_ingresar" name="" id="tipo_doc"  required>
-                    <option disabled selected value="0">Selecciona el tipo de documento</option>
-                    <option value="C.C">Cedula de ciudadania</option>
-                    <option value="T.I">Tarjeta de identidad</option>
-                    <option value="C.E">Cedula extranjeria</option>
+                <select class=" input_ingresar" name="" id="tipo_doc" required>
                 </select>
-                <label  for="num_doc">Ingresa el numero de documento:</label>
+                <label  for="num_doc">ingresa el numero de documento:</label>
                 <input type="" id="num_doc" placeholder="numero de documento" autocomplete="off" required>
                 
                 <div>
@@ -42,7 +38,33 @@
                 <button type="submit" id="enviar">Enviar</button>
                 
             </form>
+            <div class="table">
+                <table>
+                    <thead>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                        <th>Email</th>
+                        <th>Tipo documento</th>
+                        <th>Num documento</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table> 
+            </div>
         </div>
+        <template id="tp_user">
+            <tr>
+                <td class="nombre">Nombre</td>
+                <td class="apellido">Apellido</td>
+                <td class="direccion">Dirección</td>
+                <td class="telefono">Teléfono</td>
+                <td class="email">Email</td>
+                <td class="tipoDoc">Tipo documento</td>
+                <td class="document">Num Documento</td>
+            </tr>
+        </template>
     </section>
     <script src="apps.js" type="module"></script>
 </body>

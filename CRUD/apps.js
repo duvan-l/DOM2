@@ -7,6 +7,9 @@ import {validarNumero  } from "./modules/validarNumero.js";
 import {validarLetras } from "./modules/validarLetras.js"
 import {validarDoc  } from "./modules/validarDocumento.js";
 import {is_valid } from "./modules/is_valid.js";
+import solicitud from "./ajax.js";
+import { URL } from "./config.js";
+
 
 const $formulario = document.querySelector("form");
 const nombre = document.querySelector("#nombre");
@@ -18,11 +21,68 @@ const documento = document.querySelector("#num_doc");
 const politicas = document.querySelector("#politicas");
 const enviar = document.querySelector("#enviar");
 const email = document.querySelector("#email");
+const fragment = document.createDocumentFragment();
+const tbUser = document.querySelector("#tp_user").content;
+const tb_fragment = document.createDocumentFragment();
+const tbody = document.querySelector("tbody")
 
-function quitarCalse (valor) {valor.classList.remove("error");}
+console.log(tbody);
 
-const validar = (e) => validarValidar(e)
+
+// let $Listar = document.querySelectorAll('form > *[required]')
+// console.log($Listar);
+
    
+const documentos = ( ) => {
+    fetch('http://localhost:3000/documentos')
+    .then((response) => response.json())
+    .then((data) => {
+
+        let optionDefault = document.createElement("option")
+        optionDefault.textContent = "Seleccionar..";
+        optionDefault.value = "";
+        fragment.appendChild(optionDefault)
+
+        data.forEach(element => {
+            console.log(element);
+            let option = document.createElement("option")
+            option.value = element.id;
+            option.textContent = element.tipoDoc;
+            
+            fragment.appendChild(option)
+        });
+        tipo_doc.appendChild(fragment)
+    });
+}
+
+const listarTabla = async () =>{
+    const data = await solicitud("user");
+    data.forEach(element => {
+        tbUser.querySelector(".nombre").textContent = element.nombre;
+        tbUser.querySelector(".apellido").textContent = element.apellido;
+        tbUser.querySelector(".direccion").textContent = element.direccion;
+        tbUser.querySelector(".telefono").textContent = element.telefono;
+        tbUser.querySelector(".email").textContent = element.email;
+        tbUser.querySelector(".tipoDoc").textContent = element.tipo_doc;
+        tbUser.querySelector(".document").textContent = element.documento;
+
+        const clone = document.importNode(tbUser, true);
+        tb_fragment.appendChild(clone);
+    });
+    tbody.appendChild(tb_fragment)
+    // tbUser
+    
+}
+
+addEventListener("DOMContentLoaded", (event) => {
+    documentos()
+    listarTabla()
+    if(!politicas.checked){
+        enviar.setAttribute("disabled", "")
+    }
+
+})
+
 $formulario.addEventListener("submit", (e)=>{
     let response = is_valid(e, "form [required]");
     // alert(response) 
@@ -33,11 +93,11 @@ $formulario.addEventListener("submit", (e)=>{
         direccion: direccion.value,
         telefono: telefono.value,
         tipo_doc: tipo_doc.value,
-        documento: documento.value
+        documento: documento.value,
+        email: email.value
     }
-    
     if(response){
-        fetch("http://localhost:3000/user", {
+        fetch(`${URL}/user`, {
             method: 'POST', //metodo
             body: JSON.stringify(data),  //cuerpo
             headers: {
@@ -51,16 +111,36 @@ $formulario.addEventListener("submit", (e)=>{
                     Apellido: ${data.apellido} 
                     Direccion: ${data.direccion}
                     Telefono: ${data.telefono}
-                    Documento:${data.documento}` )
+                    Tipo de documento: ${data.tipo_doc}
+                    Documento:${data.documento}
+                    Email: ${data.email}` )
             }else{
                 alert("Error al agregar los datos")
             }
         }))
+
+        
+        
+        .then((json) => {
+            console.log(json);
+            nombre.value = '',
+            apellido.value = '',
+            direccion.value = '',
+            telefono.value = '',
+            tipo_doc.value = '',
+            documento.value = '',
+            email.value = '',
+            politicas.checked = false,
+
+            nombre.classList.remove("correcto")
+        });
+
     }
+    
 });
- //boton, al dar click haga la funcion
 
 const remover = (e) => validarRemover(e)
+
 
 nombre.addEventListener("keyup", (e) => {remover(e);});
 
@@ -76,7 +156,7 @@ documento.addEventListener("keyup", (e) => {remover(e);});
 
 enviar.setAttribute('disabled', '');
 
-politicas.addEventListener("change", (e) => validarPoliticas(e, enviar));    
+politicas.addEventListener("change", (e) => {validarPoliticas(e, enviar)});    
 console.log($formulario)
 
 documento.addEventListener("keypress", (e) => validarNumero(e));
@@ -90,3 +170,11 @@ apellido.addEventListener("keypress", (e)=>{validarLetras(e)});
 documento.addEventListener("keypress", (e) => validarDoc(e));
 
 email.addEventListener('input', (e) => validarCorreo(e));
+
+// $formulario.addEventListener('submit', (e) => {
+//     $Listar.forEach((selector) => {
+//         selector.setAttribute('disabled', '')
+//     })
+//     politicas.checked = false;
+
+// })

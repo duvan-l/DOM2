@@ -5,7 +5,7 @@ export function validarValidar(e) {
         e.target.focus()
         e.target.classList.add("error")
     
-    }if( apellido.value === ""){
+    }if(apellido.value === ""){
         e.target.focus()
         e.target.classList.add("error")
 
